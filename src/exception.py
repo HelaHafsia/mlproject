@@ -1,6 +1,7 @@
 import sys  # Module qui fournit des informations sur l'exécution actuelle (par exemple, le traceback).
 from src.logger import logging  # Import du logger pour enregistrer les logs d'erreur.
 
+
 def error_message_detail(error, error_detail: sys):
     """
     Fonction utilitaire pour formater un message d'erreur détaillé.
