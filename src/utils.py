@@ -12,7 +12,8 @@ from src.exception import CustomException
 
 def save_object(file_path, obj):
     try:
-        dir_path = os.path.dirname(file_path)
+        dir_path = os.path.dirname(file_path) #os.path.dirname est une méthode du module os de Python. Elle permet d'extraire le chemin du répertoire (dossier) d'un chemin de fichier donné.
+
 
         os.makedirs(dir_path, exist_ok=True)
 

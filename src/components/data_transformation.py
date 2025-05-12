@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import numpy as np 
 import pandas as pd
-from sklearn.compose import ColumnTransformer
+from sklearn.compose import ColumnTransformer #is used to creade a pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
@@ -24,7 +24,7 @@ class DataTransformation:
 
     def get_data_transformer_object(self):
         '''
-        This function si responsible for data trnasformation
+        This function is responsible for data trnasformation
         
         '''
         try:
@@ -40,7 +40,7 @@ class DataTransformation:
             num_pipeline= Pipeline(
                 steps=[
                 ("imputer",SimpleImputer(strategy="median")),
-                ("scaler",StandardScaler())
+                ("scaler",StandardScaler()) #normalise les données pour qu'elles aient une moyenne de 0 et un écart-type de 1
 
                 ]
             )
@@ -50,7 +50,7 @@ class DataTransformation:
                 steps=[
                 ("imputer",SimpleImputer(strategy="most_frequent")),
                 ("one_hot_encoder",OneHotEncoder()),
-                ("scaler",StandardScaler(with_mean=False))
+                ("scaler",StandardScaler(with_mean=False)) #Évite de soustraire la moyenne, car les vecteurs sont de type binaire.
                 ]
 
             )
@@ -100,11 +100,13 @@ class DataTransformation:
 
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
+            #fit_transform : Entraîne le préprocesseur sur les données d'entraînement.
+            # transform : Applique les mêmes transformations sur les données de test.
 
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
-            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)] #np.c_ : Concatène les données transformées et les labels dans un tableau final.
 
             logging.info(f"Saved preprocessing object.")
 
@@ -113,7 +115,7 @@ class DataTransformation:
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj
 
-            )
+            ) #Sauvegarde du préprocesseur dans un fichier .pkl pour réutiliser le pipeline lors de l'inférence.
 
             return (
                 train_arr,
